@@ -53,11 +53,11 @@ El proyecto sigue una arquitectura en capas:
 - POST /auth/login → Inicio de sesión
 
 ### Tasks
-- GET /tasks → Obtener tareas del usuario
-- POST /tasks → Crear tarea
-- PUT /tasks/{id} → Actualizar tarea
-- DELETE /tasks/{id} → Eliminar tarea
-- GET /tasks?status=COMPLETED → Filtrar tareas
+- GET    /api/users/{userId}/tasks
+- POST   /api/users/{userId}/tasks
+- GET    /api/users/{userId}/tasks/{taskId}
+- PUT    /api/users/{userId}/tasks/{taskId}
+- DELETE /api/users/{userId}/tasks/{taskId}
 
 ---
 
