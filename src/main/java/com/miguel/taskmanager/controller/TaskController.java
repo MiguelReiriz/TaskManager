@@ -1,5 +1,7 @@
 package com.miguel.taskmanager.controller;
 
+import com.miguel.taskmanager.dto.TaskRequestDTO;
+import com.miguel.taskmanager.dto.TaskResponseDTO;
 import com.miguel.taskmanager.entity.Task;
 import com.miguel.taskmanager.service.TaskService;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +19,18 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks(@PathVariable Long userId) {
+    public List<TaskResponseDTO> getTasks(@PathVariable Long userId) {
         return taskService.getTasksByUser(userId);
     }
+
     @GetMapping("/{taskId}")
-    public Task getTasksById(@PathVariable Long taskId) {
+    public TaskResponseDTO getTasksById(@PathVariable Long taskId) {
         return taskService.getTasksById(taskId);
     }
 
     @PostMapping
-    public Task createTask(@PathVariable Long userId, @RequestBody Task task){
-        return taskService.createTask(userId, task);
+    public TaskResponseDTO createTask(@PathVariable Long userId, @RequestBody TaskRequestDTO taskRequestDTO){
+        return taskService.createTask(userId, taskRequestDTO);
     }
 
     @DeleteMapping("/{taskId}")
@@ -38,11 +41,11 @@ public class TaskController {
         taskService.deleteTask(userId, taskId);
     }
     @PutMapping("/{taskId}")
-    public Task updateTask(
+    public TaskResponseDTO updateTask(
             @PathVariable Long taskId,
             @PathVariable Long userId,
-            @RequestBody Task task) {
-        return taskService.updateTask(taskId, userId, task);
+            @RequestBody TaskRequestDTO request) {
+        return taskService.updateTask(taskId, userId, request);
 
     }
 
