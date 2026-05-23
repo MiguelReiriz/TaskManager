@@ -1,5 +1,7 @@
 package com.miguel.taskmanager.controller;
 
+import com.miguel.taskmanager.dto.UserRequestDTO;
+import com.miguel.taskmanager.dto.UserResponseDTO;
 import com.miguel.taskmanager.entity.User;
 import com.miguel.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,8 @@ public class UserController {
         return userService.getAllUsers();
     }
     @PostMapping
-    public User createTask(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserResponseDTO createTask(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.createUser(userRequestDTO);
     }
 
 }
