@@ -12,14 +12,14 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private final String SECRET = "mi_clave_secreta";
+    private final String SECRET = "LoremIpsumDolorSitAmetConsectetur";
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .signWith(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
 
