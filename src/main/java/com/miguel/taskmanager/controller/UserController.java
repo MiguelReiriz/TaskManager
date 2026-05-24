@@ -20,12 +20,26 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         return userService.getAllUsers();
     }
     @PostMapping
-    public UserResponseDTO createTask(@RequestBody UserRequestDTO userRequestDTO) {
+    public UserResponseDTO createUser(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.createUser(userRequestDTO);
     }
 
+    @GetMapping("/{userId}")
+    public UserResponseDTO getUserById(@PathVariable Long userId){
+        return userService.getUserById(userId);
+    }
+
+    @PutMapping("/{userId}")
+    public UserResponseDTO updateUser(@PathVariable Long userId, @RequestBody UserRequestDTO request){
+        return userService.updateUser(userId, request);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable Long userId){
+        userService.deleteUser(userId);
+    }
 }
