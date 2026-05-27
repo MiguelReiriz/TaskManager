@@ -24,8 +24,8 @@ public class TaskController {
     }
 
     @GetMapping("/{taskId}")
-    public TaskResponseDTO getTasksById(@PathVariable Long taskId) {
-        return taskService.getTasksById(taskId);
+    public TaskResponseDTO getTasksById(@PathVariable Long userId, @PathVariable Long taskId) {
+        return taskService.getTasksById(taskId, userId);
     }
 
     @PostMapping
