@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class TaskService {
     private final UserRepository userRepository;
@@ -21,6 +23,14 @@ public class TaskService {
     }
 
     public List<TaskResponseDTO> getTasksByUser(Long userId){
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(!user.getUsername().equals(currentUser)){
+            throw new RuntimeException("Incorrect User");
+        }
+
         List<TaskResponseDTO> taskResponseList= new ArrayList<>();
         List<Task> filteredTasks = taskRepository.findByUserId(userId);
         for (Task task : filteredTasks){
