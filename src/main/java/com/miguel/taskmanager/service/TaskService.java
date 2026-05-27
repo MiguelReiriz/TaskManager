@@ -92,8 +92,14 @@ public class TaskService {
     }
 
     public void deleteTask(Long userId, Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUsername().equals(currentUser)) {
+            throw new RuntimeException("Incorrect User");
+        }
         if (!task.getUser().getId().equals(userId)) {
             throw new RuntimeException("No autorizado");
         }
