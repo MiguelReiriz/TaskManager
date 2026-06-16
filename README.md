@@ -1,10 +1,10 @@
-# 📌 Task Manager API
+# Task Manager API
 
 Backend REST API desarrollada con **Spring Boot** para la gestión de tareas de usuarios. El proyecto implementa autenticación JWT, arquitectura en capas y buenas prácticas de desarrollo backend.
 
 ---
 
-## 🚀 Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - Java 17
 - Spring Boot
@@ -19,7 +19,7 @@ Backend REST API desarrollada con **Spring Boot** para la gestión de tareas de 
 
 ---
 
-## 🧱 Arquitectura del proyecto
+## Arquitectura del proyecto
 
 El proyecto sigue una arquitectura en capas:
 
@@ -33,7 +33,7 @@ El proyecto sigue una arquitectura en capas:
 
 ---
 
-## 🔐 Funcionalidades principales
+## Funcionalidades principales
 
 - Registro de usuarios
 - Login con autenticación JWT
@@ -46,7 +46,7 @@ El proyecto sigue una arquitectura en capas:
 
 ---
 
-## 📦 Endpoints principales
+## Endpoints principales
 
 ### Auth
 - POST /auth/register → Registro de usuario
@@ -61,7 +61,7 @@ El proyecto sigue una arquitectura en capas:
 
 ---
 
-## 🧪 Cómo ejecutar el proyecto
+## Cómo ejecutar el proyecto
 
 ### 1. Clonar repositorio
 
