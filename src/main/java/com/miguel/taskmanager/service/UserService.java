@@ -5,6 +5,8 @@ import com.miguel.taskmanager.dto.UserRequestDTO;
 import com.miguel.taskmanager.dto.UserResponseDTO;
 import com.miguel.taskmanager.entity.Task;
 import com.miguel.taskmanager.entity.User;
+import com.miguel.taskmanager.exception.ResourceNotFoundException;
+import com.miguel.taskmanager.exception.UnauthorizedException;
 import com.miguel.taskmanager.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,7 +52,7 @@ public class UserService {
 
     public UserResponseDTO getUserById(Long userId) {
         User savedUser = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         UserResponseDTO response = new UserResponseDTO();
         response.setUsername(savedUser.getUsername());
         response.setUserID(savedUser.getId());
@@ -60,12 +62,12 @@ public class UserService {
 
     public User getUserByName(String userName) {
         return repository.findByUsername(userName)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public UserResponseDTO updateUser(Long userId, UserRequestDTO updateUser) {
         User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         UserResponseDTO response = new UserResponseDTO();
         response.setUsername(updateUser.getUsername());
@@ -79,7 +81,7 @@ public class UserService {
 
     public void deleteUser(Long userId) {
         User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         repository.delete(user);
     }
@@ -87,13 +89,13 @@ public class UserService {
     public String login(UserRequestDTO request) {
         String username = request.getUsername();
         User user = repository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         String passwordEncripted = user.getPassword();
         String passwordRaw = request.getPassword();
         if (encoder.matches(passwordRaw, passwordEncripted)) {
            return jwt.generateToken(username);
         } else {
-            throw new RuntimeException("Incorrect password");
+            throw new UnauthorizedException("Incorrect password");
         }
 
     }

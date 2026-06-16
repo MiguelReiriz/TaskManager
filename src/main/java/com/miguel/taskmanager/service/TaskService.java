@@ -4,6 +4,8 @@ import com.miguel.taskmanager.dto.TaskRequestDTO;
 import com.miguel.taskmanager.dto.TaskResponseDTO;
 import com.miguel.taskmanager.entity.Task;
 import com.miguel.taskmanager.entity.User;
+import com.miguel.taskmanager.exception.ResourceNotFoundException;
+import com.miguel.taskmanager.exception.UnauthorizedException;
 import com.miguel.taskmanager.repository.UserRepository;
 import com.miguel.taskmanager.repository.TaskRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,10 +27,10 @@ public class TaskService {
 
     public List<TaskResponseDTO> getTasksByUser(Long userId) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!user.getUsername().equals(currentUser)) {
-            throw new RuntimeException("Incorrect User");
+            throw new UnauthorizedException("Incorrect User");
         }
 
         List<TaskResponseDTO> taskResponseList = new ArrayList<>();
@@ -50,7 +52,7 @@ public class TaskService {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         if (!user.getUsername().equals(currentUser)) {
-            throw new RuntimeException("Incorrect User");
+            throw new UnauthorizedException("Incorrect User");
         }
         Task task = new Task();
         task.setName(taskRequestDTO.getName());
@@ -69,12 +71,12 @@ public class TaskService {
 
     public TaskResponseDTO updateTask(Long userId, Long taskId, TaskRequestDTO updateTask) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         if (!user.getUsername().equals(currentUser)) {
-            throw new RuntimeException("Incorrect User");
+            throw new UnauthorizedException("Incorrect User");
         }
         TaskResponseDTO response = new TaskResponseDTO();
         response.setName(updateTask.getName());
@@ -94,24 +96,23 @@ public class TaskService {
     public void deleteTask(Long userId, Long taskId) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (!user.getUsername().equals(currentUser)) {
-            throw new RuntimeException("Incorrect User");
+            throw new UnauthorizedException("Incorrect User");
         }
         if (!task.getUser().getId().equals(userId)) {
-            throw new RuntimeException("No autorizado");
+            throw new UnauthorizedException("No autorizado");
         }
         taskRepository.delete(task);
     }
 
     public TaskResponseDTO getTasksById(Long taskId, Long userId) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!user.getUsername().equals(currentUser)) {
-            throw new RuntimeException("Incorrect User");
+            throw new UnauthorizedException("Incorrect User");
         }
         Task savedTask = taskRepository.getTaskById(taskId);
         TaskResponseDTO response = new TaskResponseDTO();
